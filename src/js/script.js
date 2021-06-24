@@ -40,4 +40,52 @@ document.addEventListener('DOMContentLoaded', () => {
   checkPosition();
   
 
+
+  const endData = '2021-06-25';
+
+  function getTimeValue(endTime) {
+    const time = Date.parse(endData) - Date.parse(new Date()),
+          days = Math.floor(time / (1000 * 60 * 60 * 24)),
+          hours = Math.floor((time / (1000 * 60 * 60)) % 24),
+          minutes = Math.floor((time / (1000 * 60)) % 60),
+          seconds = Math.floor((time / 1000) % 60);
+    
+          console.log({
+            'total': time,
+            days,
+            hours,
+            minutes,
+            seconds,
+          })
+    return {
+      'total': time,
+      days,
+      hours,
+      minutes,
+      seconds,
+    }
+
+    
+  }
+
+  function setClock(element, endTime) {
+    const timer = document.querySelector(element),
+          days = timer.querySelector('#days'),
+          hours = timer.querySelector('#hours'),
+          minutes = timer.querySelector('#minutes'),
+          seconds = timer.querySelector('#seconds'),
+          timeInterval = setInterval(updateValue, 1000);
+    function updateValue(endTime) {
+      const timerDelta = getTimeValue();
+            days.innerHTML = timerDelta.days,
+            hours.innerHTML = timerDelta.hours,
+            minutes.innerHTML = timerDelta.minutes,
+            seconds.innerHTML = timerDelta.seconds;
+      if (timerDelta.total <= 0) {
+        clearInterval(timeInterval);
+      }
+    }
+  }
+
+  setClock('.timer', endData);
 });
