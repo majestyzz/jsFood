@@ -1,6 +1,8 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
+
+//tabs
   const tabs = document.querySelectorAll('.tabheader__item'),
         tabContent = document.querySelectorAll('.tabcontent'),
         tabPar = document.querySelector('.tabheader__items');
@@ -39,12 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
   showTab();
   checkPosition();
   
+// timer
 
 
-  const endData = '2021-06-25';
+//end-time
+  const endData = '2021-07-01';
 
+//time-selection
   function getTimeValue(endTime) {
-    const time = Date.parse(endData) - Date.parse(new Date()),
+    const time = Date.parse(endData) - new Date(),
           days = Math.floor(time / (1000 * 60 * 60 * 24)),
           hours = Math.floor((time / (1000 * 60 * 60)) % 24),
           minutes = Math.floor((time / (1000 * 60)) % 60),
@@ -68,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
   }
 
+//delay and start timer
   function setClock(element, endTime) {
     const timer = document.querySelector(element),
           days = timer.querySelector('#days'),
@@ -88,4 +94,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setClock('.timer', endData);
+
+  // modal
+
+  function clickModal(openData, modalData, closeData) {
+    const modal = document.querySelector(modalData),
+          open = document.querySelectorAll(openData);
+    let condition = false;
+
+    open.forEach( (element) => {
+      element.addEventListener('click', () => {
+        modal.classList.remove('hide');
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('show');
+      modal.classList.add('hide');
+      document.body.style.overflow = '';
+    }
+    modal.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target && target.matches('.modal') || target.matches(closeData)) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Escape') {
+        closeModal();
+      }
+    });
+    
+  }
+
+  clickModal('[data-open]', '[data-modal]', '[data-close]');
 });
